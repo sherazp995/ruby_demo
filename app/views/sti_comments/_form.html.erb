@@ -1,0 +1,37 @@
+<%= form_with(model: sti_comment) do |form| %>
+  <% if sti_comment.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(sti_comment.errors.count, "error") %> prohibited this sti_comment from being saved:</h2>
+
+      <ul>
+        <% sti_comment.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :text, style: "display: block" %>
+    <%= form.text_field :text %>
+  </div>
+
+  <div>
+    <%= form.label :user_id, style: "display: block" %>
+    <%= form.text_field :user_id %>
+  </div>
+
+  <div>
+    <%= form.label :post_id, style: "display: block" %>
+    <%= form.text_field :post_id %>
+  </div>
+
+  <div>
+    <%= form.label :type, style: "display: block" %>
+    <%= form.text_field :type %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,2 @@
+class StiComment < ApplicationRecord
+end

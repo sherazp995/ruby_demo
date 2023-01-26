@@ -1,17 +1,54 @@
-<div id="<%= dom_id post %>">
-  <p>
-    <strong>Title:</strong>
-    <%= post.title %>
-  </p>
+<div id="<%= dom_id post %>" class="card">
+  <h3 class="container mt-3 d-flex justify-content-between">
+    <%= post.user.email.split('@').first %>
+    <% if request.path == post_path(post) %>
+      <div class="container d-flex justify-content-end">
+        <% if post.user_id == current_user.id %>
+          <div class="dropdown">
+            <nav class="navbar p-0">
+              <button class="btn navbar-toggler" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <%= link_to "Edit this post", edit_post_path(post), class: "btn dropdown-item" %>
+                <div class="dropdown-divider"></div>
+                <%= button_to "Destroy this post", post, method: :delete, class: "btn btn-danger dropdown-item" %>
+              </div>
+            </nav>
+          </div>
+        <% end %>
+        <%= link_to posts_path do %>
+          <button type="button" class="btn-close mr-5" aria-label="Close"></button>
+        <% end %>
+      </div>
+    <% else %>
+      <% if post.user_id == current_user.id %>
+        <div class="dropdown">
+          <nav class="navbar p-0">
+            <button class="btn navbar-toggler" id="dropdownMenuButton" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <%= link_to "Edit this post", edit_post_path(post), class: "btn dropdown-item" %>
+              <div class="dropdown-divider"></div>
+              <%= button_to "Destroy this post", post, method: :delete, class: "btn btn-danger dropdown-item" %>
+            </div>
+          </nav>
+        </div>
+      <% end %>
+    <% end %>
+  </h3>
+  <hr/>
+  <%= link_to post, class: "text-dark text-decoration-none" do %>
+    <div class="container mb-3">
+      <strong>Title:</strong>
+      <%= post.title %>
+    </div>
 
-  <p>
-    <strong>Description:</strong>
-    <%= post.description %>
-  </p>
-
-  <p>
-    <strong>User:</strong>
-    <%= post.user_id %>
-  </p>
+    <div class="card-body">
+      <strong>Description:</strong>
+      <%= post.description %>
+    </div>
+  <% end %>
 
 </div>

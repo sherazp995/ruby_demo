@@ -1,6 +1,5 @@
-class Comment < StiComment
+class Comment < ApplicationRecord
   belongs_to :user
   belongs_to :post
-  has_many :replies, :class_name => "Reply"
-
+  has_many :replies, dependent: :destroy
 end

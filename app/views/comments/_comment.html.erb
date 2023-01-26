@@ -1,0 +1,77 @@
+<div id="<%= dom_id comment %>">
+  <% if comment.id %>
+    <div class="card p-3 mt-2">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="user d-flex flex-row align-items-center">
+          <small class="font-weight-bold text-primary"><%= comment.user&.email.split('@').first %></small>
+          &nbsp; &nbsp; &nbsp; &nbsp;
+          <span id="comment-text-<%= comment.id %>">
+            <small class="font-weight-bold"><%= comment.text %></small>
+          </span>
+        </div>
+        <div id="edit-comment-<%= comment.id %>" class="w-75" style="display: none">
+          <%= form_for comment, class: "form-control" do |form| %>
+            <% if comment.errors.any? %>
+              <div style="color: red">
+                <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+                <ul>
+                  <% comment.errors.each do |error| %>
+                    <li><%= error.full_message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+            <div class="input-group">
+              <%= form.text_field :text, placeholder: "Add Comment", class: "form-control", required: true %>
+              <div class="input-group-append">
+                <%= form.button 'Save', :class => "btn btn-primary" %>
+              </div>
+            </div>
+            <div>
+              <%= form.hidden_field :user_id, value: current_user.id %>
+            </div>
+          <% end %>
+        </div>
+        <small><%= time_ago_in_words(comment.created_at) %> ago</small>
+      </div>
+      <div class="action d-flex justify-content-between mt-2 align-items-center">
+        <div class="reply d-flex justify-content-between px-4">
+          <% if comment.user_id == current_user.id %>
+            <small><%= button_to "Remove", comment, method: :delete, class: "btn" %></small>
+            <span class="dots"></span>
+            <small class="btn" onclick="editComment(<%= comment.id %>)" role="button">Edit</small>
+            <span class="dots"></span>
+          <% end %>
+          <small class="btn" onclick="newReply(<%= comment.id %>)" role="button">Reply</small>
+        </div>
+        <div class="reply px-4"><span><%= comment.replies.length %> replies</span></div>
+      </div>
+      <div class="justify-content-end" id="new-reply-for-<%= comment.id %>" style="display: none;">
+        <%= form_with model: [ comment, comment.replies.build ], class: "col-md-10" do |form| %>
+          <div>
+            <%= form.hidden_field :user_id, value: current_user.id %>
+          </div>
+          <div class="input-group mb-3">
+            <%= form.text_field :text, placeholder: "Add Reply", class: "form-control", required: true %>
+            <div class="input-group-append">
+              <%= form.button :class => "btn btn-primary" do %>
+                <i class="bi bi-send"></i>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <%= render comment.replies %>
+    </div>
+  <% end %>
+</div>
+<script>
+    function newReply(comment) {
+        document.getElementById('new-reply-for-'+comment).style.display = 'flex';
+    }
+    function editComment(comment) {
+        document.getElementById('comment-text-'+comment).style.display = 'none';
+        document.getElementById('edit-comment-'+comment).style.display = 'block';
+    }
+</script>

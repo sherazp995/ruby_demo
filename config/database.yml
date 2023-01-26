@@ -8,13 +8,15 @@ default: &default
   adapter: postgresql
   pool: 5
   timeout: 5000
-  user: sheraz
-  password: sheraz
 
 development:
   primary:
     <<: *default
     database:  test_app
+  primary_replica:
+    <<: *default
+    database:  test_app
+    replica: true
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

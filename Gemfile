@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.1.3"
+ruby "3.0.0"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.4"
@@ -32,6 +32,10 @@ gem "redis", "~> 4.0"
 
 gem 'devise'
 gem 'pg'
+gem 'bootstrap'
+gem 'bootstrap_form'
+gem 'jquery-rails'
+
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
 
@@ -39,7 +43,7 @@ gem 'pg'
 # gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", '~> 1.2021', '>= 1.2021.5'
+gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -52,7 +56,7 @@ gem "bootsnap", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem "debug"
+  gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
 
 group :development do
@@ -64,6 +68,12 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  # For debugging purposes
+  gem 'byebug'
+  gem 'minitest-reporters'
+  gem 'pry'
+  gem 'pry-byebug'
 end
 
 group :test do

@@ -1,0 +1,56 @@
+<div class="d-flex justify-content-end" id="<%= dom_id reply %>">
+  <% if reply.id %>
+    <div class="col-md-10">
+      <div class="card p-3 mt-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="user d-flex flex-row align-items-center">
+            <span><small class="font-weight-bold text-primary"><%= reply.user&.email.split('@').first %></small>
+              &nbsp; &nbsp; &nbsp; &nbsp;
+              <span id="reply-text-<%= reply.id %>">
+                <small class="font-weight-bold"><%= reply.text %></small>
+              </span>
+            </span>
+          </div>
+          <div id="edit-reply-<%= reply.id %>" class="w-75" style="display: none">
+            <%= form_for reply, class: "form-control" do |form| %>
+              <% if reply.errors.any? %>
+                <div style="color: red">
+                  <h2><%= pluralize(reply.errors.count, "error") %> prohibited this comment from being saved:</h2>
+                  <ul>
+                    <% reply.errors.each do |error| %>
+                      <li><%= error.full_message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+              <div class="input-group">
+                <%= form.text_field :text, placeholder: "Add Comment", class: "form-control", required: true %>
+                <div class="input-group-append">
+                  <%= form.button 'Save', :class => "btn btn-primary" %>
+                </div>
+              </div>
+              <div>
+                <%= form.hidden_field :user_id, value: current_user.id %>
+              </div>
+            <% end %>
+          </div>
+          <small><%= time_ago_in_words(reply.updated_at) %> ago</small>
+        </div>
+        <% if reply.user_id == current_user.id %>
+          <div class="action d-flex justify-content-between mt-2 align-items-center">
+            <div class="reply d-flex justify-content-between px-4">
+              <small><%= button_to "Remove", reply, method: :delete, class: "btn" %></small>
+              <small class="btn" onclick="editReply(<%= reply.id %>)" role="button">Edit</small>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>
+<script>
+    function editReply(reply) {
+        document.getElementById('reply-text-'+reply).style.display = 'none';
+        document.getElementById('edit-reply-'+reply).style.display = 'block';
+    }
+</script>
